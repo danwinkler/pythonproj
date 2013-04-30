@@ -19,9 +19,6 @@ def removeTags(html, *tags):
 	except (HTMLParseError, TypeError):
 		return html
 
-#matches stuff thats not punctuation
-nonPunct = re.compile('.*[A-Za-z0-9].*')
-
 tree = et.parse( "boingboing/bbpostsdump.xml" )
 
 root = tree.getroot()

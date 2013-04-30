@@ -8,36 +8,23 @@ from nltk import tokenize
 from bs4 import BeautifulSoup
 from HTMLParser import HTMLParseError
 
-#helper function to remove html tags
-def removeTags(html, *tags):
-	try:
-		soup = BeautifulSoup(html)
-		for tag in tags:
-			for tag in soup.findAll(tag):
-				tag.replaceWith("")
-		return str( soup )
-	except (HTMLParseError, TypeError):
-		return html
+f = open( sys.argv[1] + '/standardnews.pickle' )
+articles = pickle.load( f )
+f.close()
 
 #matches stuff thats not punctuation
 nonPunct = re.compile('.*[A-Za-z0-9].*')
 
-tree = et.parse( "bbpostsdump.xml" )
-
-root = tree.getroot()
-
 #dictionary has format of {monthasstring: [FreqDist]} hopefully that makes sense haha
 wordfreqpermonth = {}
 
-for child in root.findall( "row" ):
-	bodytext = child.find( "body" ).text
+for article in articles:
+	bodytext = article[1]
 	
 	if bodytext is None: 
 		print "fail"
 		continue
-	
-	bodytext = removeTags( bodytext, 'a', 'b', 'p', 'i', 'blockquote', 'param', 'br', 'img')
-	
+		
 	#tokenize text into sentences, and then sentences into words
 	l1 = [tokenize.word_tokenize( sent ) for sent in tokenize.sent_tokenize( bodytext )]
 	
@@ -48,7 +35,7 @@ for child in root.findall( "row" ):
 	words = [w for w in words if nonPunct.match( w )]
 	
 	#get the month as a string, ex: 2000-01 . the created_on tag looks like: 2000-03-01 11:14:13
-	month = child.find( "created_on" ).text[:7]
+	month = article[0][:7]
 	
 	print month
 	
@@ -61,7 +48,7 @@ for child in root.findall( "row" ):
 	for word in words:
 		fd.inc( word.lower() )
 
-f = open( 'wordfreqpermonth.pickle', 'w' )
+f = open( sys.argv[1] + 'wordfreqpermonth.pickle', 'w' )
 
 pickle.dump( wordfreqpermonth, f )
 

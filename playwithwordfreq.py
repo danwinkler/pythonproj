@@ -5,11 +5,11 @@ import pickle
 from nltk import FreqDist
 from nltk import tokenize
 
-f = open( 'wordfreqpermonth.pickle' )
+f = open( sys.argv[1] + '/wordfreqpermonth.pickle' )
 dict = pickle.load( f )
 f.close()
 
-f = open( "wordplot.csv", "w" )
+f = open( sys.argv[1] + '/wordplot.csv', 'w' )
 
 wordlist = ["the","a","internet","weather","government"]
 
