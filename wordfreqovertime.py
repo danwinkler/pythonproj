@@ -48,7 +48,7 @@ for article in articles:
 	for word in words:
 		fd.inc( word.lower() )
 
-f = open( sys.argv[1] + 'wordfreqpermonth.pickle', 'w' )
+f = open( sys.argv[1] + '/wordfreqpermonth.pickle', 'w' )
 
 pickle.dump( wordfreqpermonth, f )
 

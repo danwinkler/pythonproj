@@ -7,7 +7,7 @@ f = open( sys.argv[1] + '/wordfreqpermonth.pickle' )
 dict = pickle.load( f )
 f.close()
 
-wordlist = ["kill", "love"]
+wordlist = ["perry", "bush"]
 for word in wordlist:
 	keys = []
 	vals = []
